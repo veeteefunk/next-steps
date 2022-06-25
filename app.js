@@ -1,50 +1,44 @@
-const progress = document.getElementById('progress')
-const prev = document.getElementById('prev')
-const next = document.getElementById('next')
-const circles = document.querySelectorAll('.circle')
+// document.getElementById('btn').addEventListener('click', play);
 
-let currentActive = 1
+const guessesAllowed = 6;
+const numOfLettersPerWord = 5;
+const board = document.getElementById('board');
 
-next.addEventListener('click', () => {
-    currentActive++
+for (let i = 0; i < guessesAllowed; i++) {
+    const row = document.createElement('div');
+    board.appendChild(row)
 
-    if(currentActive > circles.length) {
-        currentActive = circles.length;
+    for (let j = 0; j < numOfLettersPerWord; j++) {
+        const inputEl = document.createElement('input');
+        inputEl.setAttribute("maxlength", 1);
+        inputEl.setAttribute("type", "text");
+        inputEl.setAttribute("pattern", "[^a-zA-Z]+");
+        inputEl.addEventListener('change', function() { 
+            // if(!isNaN(inputEl.textContent)){
+            //     inputEl.textContent = "";
+            // }
+        });
+        inputEl.addEventListener('input', function() { 
+            if(!isNaN(parseInt(inputEl.value))){
+                console.log(inputEl.value)
+                inputEl.value = "";
+            }
+            else {
+            autotab(inputEl, inputEl.nextSibling)
+            }
+        });
+        
+        board.appendChild(inputEl);
     }
+}
 
-    update()
-})
-
-prev.addEventListener('click', () => {
-    currentActive--
-
-    if(currentActive < 1) {
-        currentActive = 1;
-    }
-
-    update()
-})
-
-function update() {
-    circles.forEach((circle, idx) => {
-        if(idx < currentActive) {
-            circle.classList.add('active')
-        } else {
-            circle.classList.remove('active')
+function autotab(current, to) {
+    if(current.getAttribute && current.value.length == 
+        current.getAttribute("maxlength")) {
+            to.focus();
         }
-    })
+}
 
-    const actives = document.querySelectorAll('.active')
-
-    progress.style.width = (actives.length - 1) / 
-    (circles.length - 1) * 100 + '%'
-
-    if(currentActive === 1) {
-        prev.disabled = true
-    } else if(currentActive === circles.length) {
-        next.disabled = true
-    } else {
-        prev.disabled = false
-        next.disabled = false
-    }
+function play() {
+    
 }
